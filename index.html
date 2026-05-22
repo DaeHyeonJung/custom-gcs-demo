@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robot Aircraft GCS Demo</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <section class="gcs-frame" aria-label="로봇항공기 GCS 인터페이스">
+      <header class="status-grid">
+        <div class="status-left">
+          <article class="status-card flight-card">
+            <span class="status-label">Flight Time</span>
+            <strong id="flightTime">00:12:38</strong>
+          </article>
+
+          <article class="status-card battery-card">
+            <span class="status-label">Battery / Voltage</span>
+            <div class="status-main battery-main">
+              <span class="battery-gauge" aria-hidden="true">
+                <span id="batteryFill" class="battery-fill"></span>
+              </span>
+              <strong><span id="batteryLevel">82</span>% / <span id="voltage">22.6</span>V</strong>
+            </div>
+          </article>
+
+          <article class="status-card gps-card">
+            <span class="status-label">GPS Satellites / RC Link</span>
+            <div class="status-main gps-main">
+              <strong><span class="sat-icon" aria-hidden="true"></span><span id="gpsCount">14</span></strong>
+              <span class="rc-link-status" aria-label="RC link quality">
+                <span class="signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                <b id="linkQuality">98%</b>
+              </span>
+            </div>
+          </article>
+        </div>
+
+        <article class="status-card status-card-wide">
+          <span class="status-label">Altitude, Groundspeed, Flight Mode</span>
+          <strong><span id="altitude">128</span>m · <span id="groundSpeed">16.4</span>m/s · <span id="flightMode">AUTO</span></strong>
+        </article>
+      </header>
+
+      <main class="main-grid">
+        <section class="panel camera-panel" aria-label="카메라 영상">
+          <span id="cameraClock" class="camera-clock">15:57:47</span>
+          <video id="cameraVideo" class="camera-video" src="Video Project 6.mp4" autoplay muted loop playsinline></video>
+          <div class="camera-hud">
+            <span>CAM-01</span>
+            <span>HD LINK</span>
+            <span>REC</span>
+          </div>
+        </section>
+
+        <section class="panel mission-panel" aria-label="임무 진행 시각화 그림">
+          <svg class="mission-map" viewBox="0 0 600 350" role="img" aria-label="임무 진행 경로">
+            <defs>
+              <linearGradient id="routeGradient" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#52d2c8"/>
+                <stop offset="50%" stop-color="#f4d06f"/>
+                <stop offset="100%" stop-color="#ef7d5b"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="600" height="350" rx="10" class="map-bg"/>
+            <g class="map-grid">
+              <line x1="90" y1="0" x2="90" y2="350"/>
+              <line x1="180" y1="0" x2="180" y2="350"/>
+              <line x1="270" y1="0" x2="270" y2="350"/>
+              <line x1="360" y1="0" x2="360" y2="350"/>
+              <line x1="450" y1="0" x2="450" y2="350"/>
+              <line x1="540" y1="0" x2="540" y2="350"/>
+              <line x1="0" y1="70" x2="600" y2="70"/>
+              <line x1="0" y1="140" x2="600" y2="140"/>
+              <line x1="0" y1="210" x2="600" y2="210"/>
+              <line x1="0" y1="280" x2="600" y2="280"/>
+            </g>
+            <path id="missionRoute" d="M118 304 L118 240 L300 118 L532 54 L80 56 L204 114 L332 292 L204 114 L80 56 L532 54 L300 118 L118 240 L118 304" class="route-shadow"/>
+            <path id="plannedRoute" d="M118 304 L118 240 L300 118 L532 54 L80 56 L204 114 L332 292 L204 114 L80 56 L532 54 L300 118 L118 240 L118 304" class="route-line"/>
+            <path id="completedRoute" d="M118 304 L118 240 L300 118 L532 54 L80 56 L204 114 L332 292" class="route-progress route-progress-outbound"/>
+            <path id="returnRoute" d="M332 292 L204 114 L80 56 L532 54 L300 118 L118 240 L118 304" class="route-progress route-progress-return"/>
+            <g class="mission-zones" aria-hidden="true">
+              <rect x="70" y="280" width="96" height="52" rx="26"/>
+              <rect x="286" y="252" width="92" height="54" rx="27"/>
+            </g>
+            <g id="waypoints">
+              <g class="waypoint-node" data-node="wp1" transform="translate(118 240)">
+                <circle class="waypoint-ring" r="15"/>
+                <circle class="waypoint-fill" r="9"/>
+                <text x="0" y="-24">WP1</text>
+              </g>
+              <g class="waypoint-node" data-node="wp2" transform="translate(300 118)">
+                <circle class="waypoint-ring" r="15"/>
+                <circle class="waypoint-fill" r="9"/>
+                <text x="0" y="-24">WP2</text>
+              </g>
+              <g class="waypoint-node" data-node="wp3" transform="translate(532 54)">
+                <circle class="waypoint-ring" r="15"/>
+                <circle class="waypoint-fill" r="9"/>
+                <text x="0" y="34">WP3</text>
+              </g>
+              <g class="waypoint-node" data-node="wp4" transform="translate(80 56)">
+                <circle class="waypoint-ring" r="15"/>
+                <circle class="waypoint-fill" r="9"/>
+                <text x="0" y="34">WP4</text>
+              </g>
+              <g class="waypoint-node" data-node="wp5" transform="translate(204 114)">
+                <circle class="waypoint-ring" r="15"/>
+                <circle class="waypoint-fill" r="9"/>
+                <text x="0" y="34">WP5</text>
+              </g>
+              <g class="waypoint-node" data-node="rep" transform="translate(332 292)">
+                <circle class="waypoint-ring" r="15"/>
+                <circle class="waypoint-fill" r="9"/>
+                <text x="0" y="-24">REP</text>
+              </g>
+            </g>
+            <circle id="movingMissionDot" class="moving-dot" cx="118" cy="304" r="8"/>
+          </svg>
+        </section>
+
+        <aside class="panel checklist-panel" aria-label="임무 진행 체크박스 리스트">
+          <form id="missionChecklist" class="checklist">
+            <label><input type="checkbox" data-step="wp1-out"> <span># wp1</span></label>
+            <label><input type="checkbox" data-step="wp2-out"> <span># wp2</span></label>
+            <label><input type="checkbox" data-step="wp3-out"> <span># wp3</span></label>
+            <label><input type="checkbox" data-step="wp4-out"> <span># wp4</span></label>
+            <label><input type="checkbox" data-step="wp5-out"> <span># wp5</span></label>
+            <label><input type="checkbox" data-step="rep"> <span># rep</span></label>
+            <label><input type="checkbox" data-step="wp5-return"> <span># wp5 return</span></label>
+            <label><input type="checkbox" data-step="wp4-return"> <span># wp4 return</span></label>
+            <label><input type="checkbox" data-step="wp3-return"> <span># wp3 return</span></label>
+            <label><input type="checkbox" data-step="wp2-return"> <span># wp2 return</span></label>
+            <label><input type="checkbox" data-step="wp1-return"> <span># wp1 return</span></label>
+          </form>
+        </aside>
+
+        <section class="panel attitude-panel" aria-label="Vtol 모형기를 통한 실시간 자세 변화형상 및 정보 플롯">
+          <div class="attitude-content">
+            <div class="vtol-stage">
+              <div class="attitude-status">
+                <span id="attitudeMode">STABLE</span>
+              </div>
+              <div class="horizon">
+                <div id="horizonLine" class="horizon-line"></div>
+              </div>
+              <div class="vtol-camera" aria-hidden="true">
+                <div id="vtolModel" class="vtol-model-3d">
+                  <span class="hero-shadow"></span>
+                  <span class="hero-main-wing"></span>
+                  <span class="hero-wing-band band-left"></span>
+                  <span class="hero-wing-band band-right"></span>
+                  <span class="hero-tail-boom"></span>
+                  <span class="hero-v-tail tail-left"></span>
+                  <span class="hero-v-tail tail-right"></span>
+                  <span class="hero-motor-arm arm-front-left"></span>
+                  <span class="hero-motor-arm arm-front-right"></span>
+                  <span class="hero-motor-arm arm-rear-left"></span>
+                  <span class="hero-motor-arm arm-rear-right"></span>
+                  <span class="hero-fuselage"></span>
+                  <span class="hero-nose"></span>
+                  <span class="hero-canopy"></span>
+                  <span class="hero-belly-camera"></span>
+                  <span class="hero-landing-gear gear-left"></span>
+                  <span class="hero-landing-gear gear-right"></span>
+                  <span class="hero-rotor rotor-front-left"><i></i></span>
+                  <span class="hero-rotor rotor-front-right"><i></i></span>
+                  <span class="hero-rotor rotor-rear-left"><i></i></span>
+                  <span class="hero-rotor rotor-rear-right"><i></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="plot-area">
+              <canvas id="plotCanvas" width="560" height="250" aria-label="자세 정보 플롯"></canvas>
+              <div class="plot-legend">
+                <span><i class="roll"></i>Roll <b id="rollValue">+2.4</b></span>
+                <span><i class="pitch"></i>Pitch <b id="pitchValue">-1.8</b></span>
+                <span><i class="yaw"></i>Yaw <b id="yawValue">048</b></span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
