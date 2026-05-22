@@ -8,6 +8,8 @@ const altitudeEl = document.getElementById("altitude");
 const groundSpeedEl = document.getElementById("groundSpeed");
 const flightModeEl = document.getElementById("flightMode");
 const cameraClockEl = document.getElementById("cameraClock");
+const cameraCompassEl = document.getElementById("cameraCompass");
+const compassHeadingEl = document.getElementById("compassHeading");
 const attitudeModeEl = document.getElementById("attitudeMode");
 const rollValueEl = document.getElementById("rollValue");
 const pitchValueEl = document.getElementById("pitchValue");
@@ -243,6 +245,7 @@ function updateStatus() {
   const roll = Math.sin(tick / 6) * 6.8;
   const pitch = Math.cos(tick / 8) * 4.6;
   const yaw = 48 + Math.sin(tick / 18) * 8;
+  const compassHeading = (300 + Math.sin(tick / 12) * 34 + Math.sin(tick / 5) * 7 + 360) % 360;
   const altitude = 128 + Math.round(Math.sin(tick / 12) * 4);
   const groundSpeed = 16.4 + Math.sin(tick / 7) * 0.8;
   const linkQuality = 97 + Math.round(Math.sin(tick / 11) * 2);
@@ -273,6 +276,9 @@ function updateStatus() {
   rollValueEl.textContent = `${roll >= 0 ? "+" : ""}${roll.toFixed(1)}`;
   pitchValueEl.textContent = `${pitch >= 0 ? "+" : ""}${pitch.toFixed(1)}`;
   yawValueEl.textContent = pad(Math.round(yaw));
+  compassHeadingEl.textContent = `${pad(Math.round(compassHeading))}°`;
+  cameraCompassEl.style.setProperty("--heading", `${compassHeading.toFixed(1)}deg`);
+  cameraCompassEl.setAttribute("aria-label", `방위 ${Math.round(compassHeading)}도`);
 
   vtolModel.style.setProperty("--roll", `${roll.toFixed(1)}deg`);
   vtolModel.style.setProperty("--pitch", `${pitch.toFixed(1)}deg`);

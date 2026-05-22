@@ -49,15 +49,30 @@
         <section class="panel camera-panel" aria-label="카메라 영상">
           <span id="cameraClock" class="camera-clock">15:57:47</span>
           <video id="cameraVideo" class="camera-video" src="Video Project 6.mp4" autoplay muted loop playsinline></video>
+          <div id="cameraCompass" class="camera-compass" aria-label="방위 300도">
+            <span class="compass-cardinal compass-n">N</span>
+            <span class="compass-cardinal compass-e">E</span>
+            <span class="compass-cardinal compass-s">S</span>
+            <span class="compass-cardinal compass-w">W</span>
+            <span class="compass-tick tick-30"></span>
+            <span class="compass-tick tick-60"></span>
+            <span class="compass-tick tick-120"></span>
+            <span class="compass-tick tick-150"></span>
+            <span class="compass-tick tick-210"></span>
+            <span class="compass-tick tick-240"></span>
+            <span class="compass-tick tick-300"></span>
+            <span class="compass-tick tick-330"></span>
+            <span class="compass-needle"></span>
+            <span id="compassHeading" class="compass-heading">300°</span>
+          </div>
           <div class="camera-hud">
-            <span>CAM-01</span>
             <span>HD LINK</span>
             <span>REC</span>
           </div>
         </section>
 
         <section class="panel mission-panel" aria-label="임무 진행 시각화 그림">
-          <svg class="mission-map" viewBox="0 0 600 350" role="img" aria-label="임무 진행 경로">
+          <svg class="mission-map" viewBox="0 0 600 350" preserveAspectRatio="none" role="img" aria-label="임무 진행 경로">
             <defs>
               <linearGradient id="routeGradient" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stop-color="#52d2c8"/>

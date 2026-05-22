@@ -295,8 +295,8 @@ body {
   display: grid;
   min-height: 0;
   gap: clamp(10px, 1vw, 14px);
-  grid-template-columns: 58.2% 27.4% 12.8%;
-  grid-template-rows: 44.5% 1fr;
+  grid-template-columns: 58.2% 27.1% 13.3%;
+  grid-template-rows: 52% 1fr;
 }
 
 .panel {
@@ -388,9 +388,9 @@ h2 {
   z-index: 5;
   right: 16px;
   bottom: 14px;
-  left: 16px;
+  left: auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 10px;
   color: rgba(237, 242, 247, 0.88);
   font-size: clamp(0.68rem, 0.75vw, 0.88rem);
@@ -410,6 +410,143 @@ h2 {
   color: var(--red);
 }
 
+.camera-compass {
+  --heading: 300deg;
+  position: absolute;
+  z-index: 5;
+  bottom: 12px;
+  left: 14px;
+  width: clamp(70px, 5.7vw, 94px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(222, 151, 71, 0.7);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, rgba(7, 8, 10, 0.18) 0 35%, transparent 36%),
+    repeating-conic-gradient(from -4deg, rgba(222, 151, 71, 0.72) 0deg 1.7deg, transparent 1.7deg 15deg),
+    rgba(0, 0, 0, 0.48);
+  box-shadow: 0 0 18px rgba(222, 151, 71, 0.16), inset 0 0 16px rgba(0, 0, 0, 0.72);
+  color: #e29a4a;
+  font-family: "Segoe UI", Arial, sans-serif;
+  text-shadow: 0 0 7px rgba(226, 154, 74, 0.52);
+}
+
+.camera-compass::before,
+.camera-compass::after {
+  position: absolute;
+  inset: 12%;
+  border: 1px dashed rgba(222, 151, 71, 0.45);
+  border-radius: 50%;
+  content: "";
+}
+
+.camera-compass::after {
+  inset: 28%;
+  border-style: solid;
+  opacity: 0.28;
+}
+
+.compass-cardinal,
+.compass-heading,
+.compass-tick,
+.compass-needle {
+  position: absolute;
+  display: block;
+}
+
+.compass-cardinal {
+  font-size: clamp(0.42rem, 0.45vw, 0.6rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.compass-n {
+  top: 7%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.compass-e {
+  top: 48%;
+  right: 7%;
+  transform: translateY(-50%);
+}
+
+.compass-s {
+  bottom: 7%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.compass-w {
+  top: 48%;
+  left: 7%;
+  transform: translateY(-50%);
+}
+
+.compass-tick {
+  top: 6%;
+  left: 50%;
+  width: 1px;
+  height: 7%;
+  background: rgba(226, 154, 74, 0.72);
+  transform-origin: 50% 630%;
+}
+
+.tick-30 {
+  transform: translateX(-50%) rotate(30deg);
+}
+
+.tick-60 {
+  transform: translateX(-50%) rotate(60deg);
+}
+
+.tick-120 {
+  transform: translateX(-50%) rotate(120deg);
+}
+
+.tick-150 {
+  transform: translateX(-50%) rotate(150deg);
+}
+
+.tick-210 {
+  transform: translateX(-50%) rotate(210deg);
+}
+
+.tick-240 {
+  transform: translateX(-50%) rotate(240deg);
+}
+
+.tick-300 {
+  transform: translateX(-50%) rotate(300deg);
+}
+
+.tick-330 {
+  transform: translateX(-50%) rotate(330deg);
+}
+
+.compass-needle {
+  top: 32%;
+  left: 50%;
+  width: 29%;
+  height: 35%;
+  clip-path: polygon(50% 0, 100% 100%, 50% 82%, 0 100%);
+  background: linear-gradient(180deg, #f3b15a, #d98228);
+  filter: drop-shadow(0 0 8px rgba(226, 154, 74, 0.55));
+  transform: translateX(-50%) rotate(var(--heading));
+  transform-origin: 50% 52%;
+  transition: transform 420ms ease;
+}
+
+.compass-heading {
+  bottom: 14%;
+  left: 50%;
+  color: #f1ad5b;
+  font-size: clamp(0.44rem, 0.48vw, 0.62rem);
+  font-weight: 900;
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
 .mission-panel {
   grid-column: 2;
   grid-row: 1;
@@ -420,9 +557,9 @@ h2 {
 
 .mission-map {
   position: absolute;
-  inset: 8px;
-  width: calc(100% - 16px);
-  height: calc(100% - 16px);
+  inset: 5px;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
 }
 
 .map-bg {
@@ -530,34 +667,34 @@ h2 {
 
 .checklist {
   position: absolute;
-  inset: 5px 7px;
+  inset: 6px;
   display: grid;
-  align-content: start;
-  gap: 2px;
-  grid-auto-rows: 19px;
+  align-content: stretch;
+  gap: 3px;
+  grid-auto-rows: 1fr;
 }
 
 .checklist label {
   display: grid;
-  height: 19px;
+  min-height: 0;
   min-width: 0;
-  padding: 2px 6px;
+  padding: 3px 6px;
   align-items: center;
-  gap: 6px;
-  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 7px;
+  grid-template-columns: 16px minmax(0, 1fr);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.035);
   color: var(--muted);
-  font-size: clamp(0.64rem, 0.68vw, 0.82rem);
+  font-size: clamp(0.76rem, 0.82vw, 1rem);
   font-weight: 800;
   line-height: 1;
   word-break: keep-all;
 }
 
 .checklist input {
-  width: 13px;
-  height: 13px;
+  width: 15px;
+  height: 15px;
   margin: 0;
   accent-color: var(--green);
 }
